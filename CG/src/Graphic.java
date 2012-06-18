@@ -113,7 +113,7 @@ public class Graphic extends Canvas {
 				f.dispose();
 			}
 		});
-		f.setSize(500, 500);
+		f.setSize(1000, 700);
 
 		final Canvas c = new Graphic();
 		f.add(c);

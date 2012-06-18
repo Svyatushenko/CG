@@ -1,24 +1,23 @@
-import java.io.*;
+//import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Scanner;
+//import java.util.Scanner;
 
 public class PathPlanning {
 	
-	public int[] Dijkstra(int s, int n, long[][] a) {
+	public int[] Dijkstra(int s, int n, double[][] a) {
 		int[] path = new int[n];
-		long[] d = new long[n];
+		double[] d = new double[n];
 		boolean[] was = new boolean[n];
 		for (int i = 0; i < n; i++) {
-			d[i] = Long.MAX_VALUE;
+			d[i] = Double.POSITIVE_INFINITY;
 			path[i] = -1;
 		}
 		d[s] = 0;
 		path[s] = s;
 		while (true) {
 			int u = -1;
-			long min = Long.MAX_VALUE;
+			double min = Double.POSITIVE_INFINITY;
 			for (int i = 0; i < n; i++) {
 				if ((!was[i]) && (d[i] < min)) {
 					min = d[i];
@@ -29,8 +28,8 @@ public class PathPlanning {
 				break;
 			was[u] = true;
 			for (int i = 0; i < n; i++) {
-				if ((a[u][i] < Long.MAX_VALUE) && (d[u] < Long.MAX_VALUE)) {
-					long relax = d[u] + a[u][i] + (long) (2*Math.sqrt((double)d[u]*a[u][i]));
+				if (a[u][i] < Double.POSITIVE_INFINITY) {
+					double relax = d[u] + a[u][i];
 					if (d[i] > relax) {
 						d[i] = relax;
 						path[i] = u;
@@ -42,7 +41,7 @@ public class PathPlanning {
 	}
 
 	private int n;
-	private long[][] a;
+	private double[][] a;
 	private List<Segment> seg = new ArrayList<Segment>();
 
 	public PathPlanning(List<Segment> segment) {
@@ -57,28 +56,28 @@ public class PathPlanning {
 					+ seg.get(i).GetPlygon());
 		}
 
-		a = new long[n][n];
+		a = new double[n][n];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
-				a[i][j] = Long.MAX_VALUE;
+				a[i][j] = Double.POSITIVE_INFINITY;
 			}
 		}
 		int start = 0;
 		for (int i = 1; i < n - 2; i++) {
 			if (seg.get(i).GetPlygon() != seg.get(i - 1).GetPlygon()) {
-				long tmp = seg.get(i - 1).GetFirstPoint()
+				double tmp = seg.get(i - 1).GetFirstPoint()
 						.Dist(seg.get(start).GetFirstPoint());
 				a[i - 1][start] = tmp;
 				a[start][i - 1] = tmp;
 				start = i;
 			} else {
-				long tmp = seg.get(i - 1).GetFirstPoint()
+				double tmp = seg.get(i - 1).GetFirstPoint()
 						.Dist(seg.get(i).GetFirstPoint());
 				a[i][i - 1] = tmp;
 				a[i - 1][i] = tmp;
 			}
 		}
-		long tmp = seg.get(n - 3).GetFirstPoint()
+		double tmp = seg.get(n - 3).GetFirstPoint()
 				.Dist(seg.get(start).GetFirstPoint());
 		a[n - 3][start] = tmp;
 		a[start][n - 3] = tmp;
@@ -91,7 +90,7 @@ public class PathPlanning {
 								seg.get(j).GetFirstPoint());
 						a[i][j] = tmp;
 						a[j][i] = tmp;
-						if (tmp == Long.MAX_VALUE)
+						if (tmp == Double.POSITIVE_INFINITY)
 							break;
 					}
 				}

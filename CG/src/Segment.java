@@ -26,9 +26,8 @@ public class Segment {
 			return y;
 		}
 
-		public long Dist(Point V) {
-			return (long) (V.x - x) * (long) (V.x - x) + (long) (V.y - y)
-					* (long) (V.y - y); 
+		public double Dist(Point V) {
+			return Math.sqrt((V.x - x)*(V.x - x) + (V.y - y)*(V.y - y));
 		}
 	}
 
@@ -80,7 +79,7 @@ public class Segment {
 		return polygon;
 	}
 
-	public long NotCross(Point V, Point W) {
+	public double NotCross(Point V, Point W) {
 		if (((long) (A.x - B.x) * (long) (A.y - W.y) - (long) (A.x - W.x)
 				* (long) (A.y - B.y))
 				* ((long) (A.x - B.x) * (long) (A.y - V.y) - (long) (A.x - V.x)
@@ -89,7 +88,7 @@ public class Segment {
 						* (long) (V.y - W.y))
 						* ((long) (V.x - W.x) * (long) (V.y - A.y) - (long) (V.x - A.x)
 								* (long) (V.y - W.y)) < 0) {
-			return Long.MAX_VALUE;
+			return Double.POSITIVE_INFINITY;
 		} 
 		return V.Dist(W);
 	}
