@@ -48,14 +48,6 @@ public class PathPlanning {
 		seg = segment;
 		n = seg.size();
 
-		for (int i = 0; i < n; i++) {
-			System.out.println(seg.get(i).GetFirstPoint().GetX() + " "
-					+ seg.get(i).GetFirstPoint().GetY() + " "
-					+ seg.get(i).GetSecondPoint().GetX() + " "
-					+ seg.get(i).GetSecondPoint().GetY() + " "
-					+ seg.get(i).GetPlygon());
-		}
-
 		a = new double[n][n];
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
