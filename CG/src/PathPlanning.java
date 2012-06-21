@@ -1,10 +1,10 @@
-//import java.io.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-//import java.util.Scanner;
+import java.util.Scanner;
 
 public class PathPlanning {
-	
+
 	public int[] Dijkstra(int s, int n, double[][] a) {
 		int[] path = new int[n];
 		double[] d = new double[n];
@@ -47,6 +47,14 @@ public class PathPlanning {
 	public PathPlanning(List<Segment> segment) {
 		seg = segment;
 		n = seg.size();
+
+		for (int i = 0; i < n; i++) {
+			System.out.println(seg.get(i).GetFirstPoint().GetX() + " "
+					+ seg.get(i).GetFirstPoint().GetY() + " "
+					+ seg.get(i).GetSecondPoint().GetX() + " "
+					+ seg.get(i).GetSecondPoint().GetY() + " "
+					+ seg.get(i).GetPlygon());
+		}
 
 		a = new double[n][n];
 		for (int i = 0; i < n; i++) {
@@ -107,7 +115,7 @@ public class PathPlanning {
 		}
 		return ans;
 	}
-/*
+
 	public static void main(String[] args) {
 		try {
 			Scanner in = new Scanner(new File("VisibilityGraph.in"));
@@ -134,5 +142,5 @@ public class PathPlanning {
 			e.printStackTrace();
 			System.exit(1);
 		}
-	} */
+	}
 }

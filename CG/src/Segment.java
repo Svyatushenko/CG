@@ -27,7 +27,8 @@ public class Segment {
 		}
 
 		public double Dist(Point V) {
-			return Math.sqrt((V.x - x)*(V.x - x) + (V.y - y)*(V.y - y));
+			return Math.sqrt(((double) V.x - x) * ((double) V.x - x)
+					+ ((double) V.y - y) * ((double) V.y - y));
 		}
 	}
 
@@ -80,16 +81,16 @@ public class Segment {
 	}
 
 	public double NotCross(Point V, Point W) {
-		if (((long) (A.x - B.x) * (long) (A.y - W.y) - (long) (A.x - W.x)
-				* (long) (A.y - B.y))
-				* ((long) (A.x - B.x) * (long) (A.y - V.y) - (long) (A.x - V.x)
-						* (long) (A.y - B.y)) < 0
-				&& ((long) (V.x - W.x) * (long) (V.y - B.y) - (long) (V.x - B.x)
-						* (long) (V.y - W.y))
-						* ((long) (V.x - W.x) * (long) (V.y - A.y) - (long) (V.x - A.x)
-								* (long) (V.y - W.y)) < 0) {
+		if ((((long) A.x - B.x) * ((long) A.y - W.y) - ((long) A.x - W.x)
+				* ((long) A.y - B.y))
+				* (((long) A.x - B.x) * ((long) A.y - V.y) - ((long) A.x - V.x)
+						* ((long) A.y - B.y)) < 0
+				&& (((long) V.x - W.x) * ((long) V.y - B.y) - ((long) V.x - B.x)
+						* ((long) V.y - W.y))
+						* (((long) V.x - W.x) * ((long) V.y - A.y) - ((long) V.x - A.x)
+								* ((long) V.y - W.y)) < 0) {
 			return Double.POSITIVE_INFINITY;
-		} 
+		}
 		return V.Dist(W);
 	}
 }
