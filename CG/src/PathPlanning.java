@@ -84,17 +84,35 @@ public class PathPlanning {
 
 		for (int i = 0; i < n; i++) {
 			for (int j = i + 1; j < n; j++) {
-				if (seg.get(i).GetPlygon() != seg.get(j).GetPlygon()) {
-					for (int l = 0; l < n - 2; l++) {
-						tmp = seg.get(l).NotCross(seg.get(i).GetFirstPoint(),
-								seg.get(j).GetFirstPoint());
-						a[i][j] = tmp;
-						a[j][i] = tmp;
-						if (tmp == Double.POSITIVE_INFINITY)
-							break;
+				for (int l = 0; l < n - 2; l++) {
+					tmp = seg.get(l).NotCross(seg.get(i).GetFirstPoint(),
+							seg.get(j).GetFirstPoint());
+					a[i][j] = tmp;
+					a[j][i] = tmp;
+					if (tmp == Double.POSITIVE_INFINITY)
+						break;
+					boolean checkPoint = Segment.CheckPoint(seg.get(i).GetFirstPoint(),
+							seg.get(j).GetFirstPoint(), seg.get(l));
+					if (checkPoint) {
+						a[i][j] = Double.POSITIVE_INFINITY;
+						a[j][i] = Double.POSITIVE_INFINITY;
+						break;
 					}
 				}
 			}
+		}
+		start = 0;
+		boolean inside;
+		for (int i = 0; i < n - 2; i++) {
+				for (int j = i + 1; j < n; j++) {
+					inside = Segment.Inside(seg.get(i).GetFirstPoint().GetIn(), seg.get(i), seg
+							.get(j).GetFirstPoint());
+					if (inside) {
+						a[i][j] = Double.POSITIVE_INFINITY;
+						a[j][i] = Double.POSITIVE_INFINITY;
+					} 
+					
+				}
 		}
 	}
 
@@ -116,31 +134,49 @@ public class PathPlanning {
 		return ans;
 	}
 
+	static PrintWriter out;
+
 	public static void main(String[] args) {
 		try {
 			Scanner in = new Scanner(new File("VisibilityGraph.in"));
-			int n = in.nextInt();
 			List<Segment> segments = new ArrayList<Segment>();
-			for (int i = 0; i < n; i++) {
+			List<Segment> polygon = new ArrayList<Segment>();
+			int k = 0;
+			while (in.hasNext()) {
 				int Ax = in.nextInt();
 				int Ay = in.nextInt();
 				int Bx = in.nextInt();
 				int By = in.nextInt();
 				int pol = in.nextInt();
-				segments.add(new Segment(new Segment.Point(Ax, Ay),
+				if (polygon.size() > 0) {
+					if (pol != polygon.get(k - 1).GetPlygon()) {
+						polygon = Segment.SQ(polygon);
+						segments.addAll(polygon);
+						polygon.clear();
+						k = 0;
+					}
+				}
+				polygon.add(new Segment(new Segment.Point(Ax, Ay),
 						new Segment.Point(Bx, By), pol));
+				k++;
+				// segments.add(new Segment(new Segment.Point(Ax, Ay),
+				// new Segment.Point(Bx, By), pol));
 			}
+//			polygon = Segment.SQ(polygon);
+			segments.addAll(polygon);
 			PathPlanning res = new PathPlanning(segments);
 			List<Segment.Point> point = res.Calculation();
-			n = point.size();
-			for (int i = 0; i < n; i++) {
-				System.out.println(point.get(i).GetX() + " "
-						+ point.get(i).GetY());
+			int n = point.size();
+			out = new PrintWriter("VisibilityGraph.out");
+			for (int j = 0; j < n; j++) {
+				out.println(point.get(j).GetX() + " " + point.get(j).GetY());
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
+		} finally {
+			out.close();
 		}
 	}
 }

@@ -19,7 +19,7 @@ public class Graphic extends Canvas {
 	private boolean newPolygon = false;
 	private boolean finalDrow = false;
 	private boolean ready = false;
-	public List<Integer> polNum = new ArrayList<Integer>();
+	public List<Segment> pol = new ArrayList<Segment>();
 	public List<Segment> segment = new ArrayList<Segment>();
 
 	public Graphic() {
@@ -66,10 +66,10 @@ public class Graphic extends Canvas {
 				int n = segment.size();
 				g.setColor(Color.BLACK);
 				for (int i = 0; i < n; i++) {
-					g.drawLine(segment.get(i).GetFirstPoint().GetX(),
-							segment.get(i).GetFirstPoint().GetY(), segment
-									.get(i).GetSecondPoint().GetX(), segment
-									.get(i).GetSecondPoint().GetY());
+					g.drawLine(segment.get(i).GetFirstPoint().GetX(), segment
+							.get(i).GetFirstPoint().GetY(), segment.get(i)
+							.GetSecondPoint().GetX(), segment.get(i)
+							.GetSecondPoint().GetY());
 				}
 				ready = false;
 				c = 0;
@@ -95,29 +95,37 @@ public class Graphic extends Canvas {
 				g.drawLine(firstX, firstY, lastX, lastY);
 				newPolygon = false;
 				first = true;
-				segment.add(new Segment(new Segment.Point(lastX, lastY),
+				pol.add(new Segment(new Segment.Point(lastX, lastY),
 						new Segment.Point(firstX, firstY), q));
+				pol = Segment.SQ(pol);
+				segment.addAll(pol);
+				pol.clear();
+				// segment.add(new Segment(new Segment.Point(lastX, lastY),
+				// new Segment.Point(firstX, firstY), q));
 				q++;
+
 			} else {
 				g.drawLine(lastX, lastY, ex, ey);
-				segment.add(new Segment(new Segment.Point(ex, ey),
+				pol.add(new Segment(new Segment.Point(ex, ey),
 						new Segment.Point(lastX, lastY), q));
+				// segment.add(new Segment(new Segment.Point(ex, ey),
+				// new Segment.Point(lastX, lastY), q));
 			}
 		}
 	}
 
 	public static void main(String s[]) {
 		final Frame f = new Frame("Draw");
-		f.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				f.dispose();
-			}
-		});
-		f.setSize(1000, 700);
+			f.addWindowListener(new WindowAdapter() {
+				public void windowClosing(WindowEvent e) {
+					f.dispose();
+				}
+			});
+			f.setSize(1000, 700);
 
-		final Canvas c = new Graphic();
-		f.add(c);
+			final Canvas c = new Graphic();
+			f.add(c);
 
-		f.setVisible(true);
-	} 
+			f.setVisible(true);
+	}
 }
