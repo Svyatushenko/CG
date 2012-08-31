@@ -113,7 +113,7 @@ public class Segment {
 	}
 	
 	public static boolean CheckPoint (Point A, Point B, Segment c) {
-		if (VectMult(A, c.A, c.A, B) == 0) {
+		if ((VectMult(A, c.A, c.A, B) == 0) && ((A.x < c.A.x && c.A.x < B.x) || (B.x < c.A.x && c.A.x < A.x))) {
 			if (Inside(c.A.in, c, B)) {
 				return true;
 			}
